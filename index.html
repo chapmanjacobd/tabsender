@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Sender 2.0</title>
+    <script src="https://cdn.jsdelivr.net/gh/ryangjchandler/spruce@0.6.1/dist/spruce.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.4.1/dist/alpine.min.js"></script>
+</head>
+
+<body>
+    <div x-data="{}" x-subscribe>
+
+        <label for="links">Links:</label>
+        <textarea id="links" x-model="$store.settings.links" /></textarea>
+
+        <div style="flex: auto; flex-direction: column;">
+
+            <ul>
+                <template x-for="link in $store.settings.links.split('\n')">
+                    <span>
+                        <li><a :href="link" x-text="link" target="_blank"
+                                onclick="(function(_this){_this.parentNode.removeChild(_this);})(this);"></a></li>
+                    </span>
+                </template>
+            </ul>
+
+        </div>
+
+
+
+    </div>
+
+    <script>
+        const setQueryStringParameter = (name, value) => {
+            const params = new URLSearchParams(window.location.search)
+            params.set(name, value)
+
+            const url = decodeURIComponent(`${window.location.pathname}?${params}`)
+            window.history.replaceState({}, '', url)
+
+            return url
+        }
+
+        let defaultSettings = {
+            links: ''
+        }
+
+        Spruce.store('settings', {})
+
+
+
+
+
+        // get settings
+        if (typeof gotSettingsFromURL === 'undefined') {
+            window.gotSettingsFromURL = true;
+
+            var urlParams = new URLSearchParams(window.location.search)
+
+            let settingsFromURL = {}
+            Object.keys(defaultSettings).forEach((key, index) => {
+                if (urlParams.has(key)) {
+                    var settingsParam = JSON.parse(urlParams.get(key))
+
+                    if (settingsParam != null) {
+                        Object.assign(settingsFromURL, { [key]: settingsParam })
+                    }
+
+                } else {
+                    Object.assign(settingsFromURL, { [key]: defaultSettings[key] })
+                }
+            })
+            Spruce.reset('settings', settingsFromURL)
+        }
+
+
+
+
+
+        // save settings
+        Object.keys(defaultSettings).forEach((key, index) => {
+            Spruce.watch(`settings.${key}`, (old, next) => {
+                setQueryStringParameter(key, encodeURIComponent(JSON.stringify(next)))
+            })
+        })
+
+
+    </script>
+</body>
+
+</html>
