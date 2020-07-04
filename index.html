@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tab Sender 2.0</title>
+    <title>Tab Sender 1.0</title>
     <script src="https://cdn.jsdelivr.net/gh/ryangjchandler/spruce@0.6.1/dist/spruce.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.4.1/dist/alpine.min.js"></script>
 </head>
@@ -16,6 +16,8 @@
         <textarea id="links" x-model="$store.settings.links" /></textarea>
 
         <div style="flex: auto; flex-direction: column;">
+
+            <p x-text="$store.settings.links.split('\n').length + ' links' "></p>
 
             <ul>
                 <template x-for="link in $store.settings.links.split('\n')">
