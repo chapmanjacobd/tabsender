@@ -13,19 +13,24 @@
 <body>
     <div x-data="{}" x-subscribe>
 
-        <label for="links">Links:</label>
         <textarea id="links" x-model="$store.settings.links" placeholder="Paste your links here"></textarea>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+            <h4 x-text="$store.settings.links.split('\n').length + ' links' " style="margin: 0;"></h4>
+
+            <button @click="
+            $store.settings.links.split('\n').filter(Boolean).forEach(l => {
+                window.open(l, '')
+            })
+            ">Open All Links</button>
+        </div>
 
         <div style="flex: auto; flex-direction: column;">
 
-            <p x-text="$store.settings.links.split('\n').length + ' links' "></p>
-
-            <ul>
+            <ul style="list-style: decimal;">
                 <template x-for="link in $store.settings.links.split('\n')">
-                    <span>
-                        <li><a :href="link" x-text="link" target="_blank"
-                                onclick="(function(_this){_this.parentNode.removeChild(_this);})(this);"></a></li>
-                    </span>
+                    <li><a :href="link" x-text="link" target="_blank"
+                            onclick="(function(_this){_this.parentNode.removeChild(_this);})(this);"></a></li>
                 </template>
             </ul>
 
