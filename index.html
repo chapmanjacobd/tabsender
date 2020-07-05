@@ -16,7 +16,7 @@
         <textarea id="links" x-model="$store.settings.links" placeholder="Paste your links here"></textarea>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-            <h4 x-text="$store.settings.links.split('\n').length + ' links' " style="margin: 0;"></h4>
+            <h4 x-text="$store.settings.links.split('\n').filter(Boolean).length + ' links' " style="margin: 0;"></h4>
 
             <button @click="
             $store.settings.links.split('\n').filter(Boolean).forEach(l => {
@@ -28,7 +28,7 @@
         <div style="flex: auto; flex-direction: column;">
 
             <ul style="list-style: decimal;">
-                <template x-for="link in $store.settings.links.split('\n')">
+                <template x-for="link in $store.settings.links.split('\n').filter(Boolean)">
                     <li><a :href="link" x-text="link" target="_blank"
                             onclick="(function(_this){_this.parentNode.removeChild(_this);})(this);"></a></li>
                 </template>
