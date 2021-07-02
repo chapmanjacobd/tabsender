@@ -20,7 +20,8 @@
 
             <button @click="
             $store.settings.links.split('\n').filter(Boolean).forEach(l => {
-                window.open(l, '')
+                const t = /^((http|https|ftp):\/\/)/.test(l) ? l : 'https://www.google.com/search?q=' + l;
+                window.open(t, '');
             })
             ">Open All Links</button>
         </div>
