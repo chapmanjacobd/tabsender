@@ -29,7 +29,8 @@
 
             <ul style="list-style: decimal;">
                 <template x-for="link in $store.settings.links.split('\n').filter(Boolean)">
-                    <li><a :href="link" x-text="link" target="_blank"
+                    <li><a :href="/^((http|https|ftp):\/\/)/.test(link) ? link : 'https://www.google.com/search?q=' + link"
+                            x-text="link" target="_blank"
                             onclick="(function(_this){_this.parentNode.removeChild(_this);})(this);"></a></li>
                 </template>
             </ul>
