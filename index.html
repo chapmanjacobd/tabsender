@@ -19,14 +19,13 @@
             <h4 x-text="$store.settings.links.split('\n').filter(Boolean).length + ' links' " style="margin: 0;"></h4>
 
             <button @click="
-            $store.settings.links.split('\n').filter(Boolean).forEach(l => {
+            $store.settings.links.split('\n').filter(Boolean).forEach((l, i) => {
                 const t = /^((http|https|ftp):\/\/)/.test(l) ? l : 'https://www.google.com/search?q=' + l;
-                window.open(t, '');
-            })
-            ">Open All Links</button>
+                setTimeout(() => {window.open(t, '')}, 1000 * i);
+             }) ">Open All Links</button>
         </div>
 
-        <div style="flex: auto; flex-direction: column;">
+        <div style=" flex: auto; flex-direction: column;">
 
             <ul style="list-style: decimal;">
                 <template x-for="link in $store.settings.links.split('\n').filter(Boolean)">
@@ -65,7 +64,7 @@
 
         // get settings
         if (typeof gotSettingsFromURL === 'undefined') {
-            window.gotSettingsFromURL = true;
+            window.gotSettingsFromURL = true
 
             var urlParams = new URLSearchParams(window.location.search)
 
