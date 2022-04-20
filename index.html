@@ -12,7 +12,7 @@
 
 <body>
     <div x-data="{ urlPrefix: 'https://www.google.com/search?q=',
-                   delayOpen: 400, delayOpenOpts: [ 100, 400, 800, 1200, 2400, 4800, 9600, 30000 ]
+                   delayOpen: '400', delayOpenOpts: [ '100', '400', '800', '1200', '2400', '4800', '9600', '30000' ]
                  }" x-subscribe>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
@@ -37,7 +37,7 @@
             <button @click="
             $store.settings.links.split('\n').filter(Boolean).forEach((l, i) => {
                 const t = /^((http|https|ftp):\/\/)/.test(l) ? l : urlPrefix + l;
-                setTimeout(() => {window.open(t, '')}, delayOpen * i);
+                setTimeout(() => {window.open(t, '')}, Number(delayOpen) * i);
              }) ">Open All Links</button>
         </div>
 
