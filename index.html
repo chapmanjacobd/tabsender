@@ -11,17 +11,33 @@
 </head>
 
 <body>
-    <div x-data="{}" x-subscribe>
+    <div x-data="{ urlPrefix: 'https://www.google.com/search?q=',
+                   delayOpen: 400, delayOpenOpts: [ 100, 400, 800, 1200, 2400, 4800, 9600, 30000 ]
+                 }" x-subscribe>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+
+            <label for="delaytime">Delay:</label>
+            <select x-model="delayOpen" id="delaytime">
+                <template x-for="opt in delayOpenOpts" :key="opt">
+                    <option :value="opt" x-text="opt"></option>
+                </template>
+            </select>
+
+            <label for="urlprefix">Non-http URL Prefix</label>
+            <input type="url" x-model="urlPrefix" id="urlprefix">
+        </div>
 
         <textarea id="links" x-model="$store.settings.links" placeholder="Paste your links here"></textarea>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-            <h4 x-text="$store.settings.links.split('\n').filter(Boolean).length + ' links' " style="margin: 0;"></h4>
+            <h4 x-text="$store.settings.links.split('\n').filter(Boolean).length + ' links' " style="margin: 0;">
+            </h4>
 
             <button @click="
             $store.settings.links.split('\n').filter(Boolean).forEach((l, i) => {
-                const t = /^((http|https|ftp):\/\/)/.test(l) ? l : 'https://www.google.com/search?q=' + l;
-                setTimeout(() => {window.open(t, '')}, 1000 * i);
+                const t = /^((http|https|ftp):\/\/)/.test(l) ? l : urlPrefix + l;
+                setTimeout(() => {window.open(t, '')}, delayOpen * i);
              }) ">Open All Links</button>
         </div>
 
@@ -64,7 +80,7 @@
 
         // get settings
         if (typeof gotSettingsFromURL === 'undefined') {
-            window.gotSettingsFromURL = true;
+            window.gotSettingsFromURL = true
 
             var urlParams = new URLSearchParams(window.location.search)
 
