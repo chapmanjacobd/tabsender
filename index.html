@@ -12,23 +12,19 @@
 
 <body>
     <div x-data="{ urlPrefix: 'https://www.google.com/search?q=',
-                   delayOpen: '400', delayOpenOpts: [ '100', '400', '800', '1200', '2400', '4800', '9600', '30000' ]
+                   delayOpen: '500',
                  }" x-subscribe>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-
-            <label for="delaytime">Delay:</label>
-            <select x-model="delayOpen" id="delaytime">
-                <template x-for="opt in delayOpenOpts" :key="opt">
-                    <option :value="opt" x-text="opt"></option>
-                </template>
-            </select>
-
-            <label for="urlprefix">Non-http URL Prefix</label>
-            <input type="url" x-model="urlPrefix" id="urlprefix">
-        </div>
 
         <textarea id="links" x-model="$store.settings.links" placeholder="Paste your links here"></textarea>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+            <label for="urlprefix">Non-http URL Prefix</label>
+            <input type="url" x-model="urlPrefix" id="urlprefix">
+
+            <label for="delaytime">Delay (ms)</label>
+            <input type="number" x-model="delayOpen" id="delaytime">
+        </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
             <h4 x-text="$store.settings.links.split('\n').filter(Boolean).length + ' links' " style="margin: 0;">
